@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MyInventory.Models;
-using PanDelivery.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
+using PanDelivery.Models;
+using MyInventory.Models;
 
 namespace MyInventory.Controllers
 {
@@ -30,7 +30,7 @@ namespace MyInventory.Controllers
         {
             return View();
         }
-        
+
 
         public IActionResult Register()
         {
@@ -56,22 +56,26 @@ namespace MyInventory.Controllers
         [HttpPost]
         public IActionResult Contact(Contact record)
         {
-            using (MailMessage mail = new MailMessage("testentprog@gmail.com", record.Email))
+            MailMessage mail = new MailMessage()
             {
-                mail.Subject = record.Subject;
-                mail.Body = record.Message;
-                mail.IsBodyHtml = true;
+                From = new MailAddress("testentprog@gmail.com", record.SenderName)
+            };
+            mail.To.Add(new MailAddress(record.Email));
+            mail.Subject = record.Subject;
+            mail.Body = record.Message;
+            mail.IsBodyHtml = true;
+            mail.Priority = MailPriority.High;
 
-                using System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587)
-                {
-                    Credentials = new NetworkCredential("testentprog@gmail.com", "Potato123@"),
-                    EnableSsl = true
-                };
 
-                smtp.Send(mail);
-            }
+            using System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential("testentprog@gmail.com", "Potato123@"),
+                EnableSsl = true
+            };
+
+            smtp.Send(mail);
             return View();
         }
-
     }
 }
+
