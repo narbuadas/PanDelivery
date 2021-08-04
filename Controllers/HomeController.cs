@@ -74,6 +74,7 @@ namespace MyInventory.Controllers
             };
 
             smtp.Send(mail);
+            ViewBag.Message = "Inquiry Sent!";
             return View();
         }
     }
