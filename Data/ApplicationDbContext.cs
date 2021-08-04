@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyInventory.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using PanDelivery.Models;
 
 namespace MyInventory.Data
 {
@@ -18,5 +19,7 @@ namespace MyInventory.Data
         public DbSet<Item> Items { get; set; }
 
         public DbSet<Supplier> Suppliers { get; set; }
+
+        public DbSet<PanDelivery.Models.Contact> Contact { get; set; }
     }
 }
